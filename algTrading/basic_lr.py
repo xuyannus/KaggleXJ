@@ -24,7 +24,7 @@ class LinearRegressionModel:
     def load_data(self):
         self.train_df = pd.read_csv(TRAINING_DATA_PATH)
 
-        for i in range(52, 53):
+        for i in range(51, 52):
             self.y_cols_bid.append("bid{}".format(i))
             self.y_cols_ask.append("ask{}".format(i))
 
@@ -55,17 +55,14 @@ class LinearRegressionModel:
 
     def model_build(self):
         lr_model_bid = lm.LinearRegression()
-        lr_model_bid.fit(self.X_bid, self.y_bid.values)
-        estimated_y_bid = lr_model_bid.predict(self.X_bid)
-        print("training RMSE: {}".format(sqrt(mean_squared_error(self.y_bid.values, estimated_y_bid))))
+        lr_model_bid.fit(self.X_bid.todense(), self.y_bid.values)
+        estimated_y_bid = lr_model_bid.predict(self.X_bid.todense())
+        print("training RMSE: {}".format(sqrt(mean_squared_error(self.y_bid, estimated_y_bid))))
 
         lr_model_ask = lm.LinearRegression()
-        lr_model_ask.fit(self.X_ask, self.y_ask.values)
-        estimated_y_ask = lr_model_bid.predict(self.X_ask)
+        lr_model_ask.fit(self.X_ask.todense(), self.y_ask.values)
+        estimated_y_ask = lr_model_bid.predict(self.X_ask.todense())
         print("training RMSE: {}".format(sqrt(mean_squared_error(self.y_ask.values, estimated_y_ask))))
-
-        import pytest
-        pytest.set_trace()
 
     def model_prediction(self):
         pass
