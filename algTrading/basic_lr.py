@@ -38,9 +38,9 @@ class LinearRegressionModel:
 
         for i in range(1, 51):
             self.x_cols_bid.append("bid{}".format(i))
-            self.x_cols_bid.append("ask{}".format(i))
+            # self.x_cols_bid.append("ask{}".format(i))
 
-            self.x_cols_ask.append("bid{}".format(i))
+            # self.x_cols_ask.append("bid{}".format(i))
             self.x_cols_ask.append("ask{}".format(i))
 
         self.x_cols_bid.extend(['security_id', 'p_tcount', 'p_value', 'trade_vwap', 'trade_volume', 'initiator'])
@@ -66,14 +66,14 @@ class LinearRegressionModel:
         lr_model_bid.fit(self.X_bid.todense(), self.y_bid.values)
         estimated_y_bid = lr_model_bid.predict(self.X_bid.todense())
 
-        bid_true_y = self.train_df[self.y_pred_cols_bid].values.flatten('F')
+        bid_true_y = self.train_df[self.y_pred_cols_bid].values.flatten()
         bid_predicted_y = np.repeat(estimated_y_bid, 49)
 
         lr_model_ask = lm.LinearRegression()
         lr_model_ask.fit(self.X_ask.todense(), self.y_ask.values)
         estimated_y_ask = lr_model_bid.predict(self.X_ask.todense())
 
-        ask_true_y = self.train_df[self.y_pred_cols_ask].values.flatten('F')
+        ask_true_y = self.train_df[self.y_pred_cols_ask].values.flatten()
         ask_predicted_y = np.repeat(estimated_y_ask, 49)
         print("training RMSE: {}".format(sqrt(mean_squared_error(np.append(bid_true_y, ask_true_y), np.append(bid_predicted_y, ask_predicted_y)))))
 
